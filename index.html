@@ -13,7 +13,7 @@ and open the template in the editor.
         <script src="phaser.min.js"></script>
     </head>
 <body>
-    <div>TODO write content</div>
+    <div>HELLO</div>
 
     <div id="middle">
         <div id="phaser_window"></div>
@@ -26,9 +26,11 @@ and open the template in the editor.
     
     function preload() {
         this.game.load.image('square', 'purple_sq.png');
+        this.game.load.image('tile', 'green_sq.png');
     }
     
     var player_group;
+    var tile_group;
     
     var player;
     var player2;
@@ -36,50 +38,34 @@ and open the template in the editor.
     function create() {
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
         
-//        player_group = this.game.add.group()
-//        player_group.enableBody = true;
-//
-//        player = player_group.create(100, 100, 'square');
-//        player.body.collideWordBounds = true;
-//        this.game.physics.arcade.enable(player);
-//        player.body.bounce.y = 0.0;
-//        player.body.gravity.y = 0;
-//        
-//        
-//        player2 = player_group.create(300, 300, 'square');
-//        
-//        //play.game.physics.arcade.enable(player);
-//        
-//        //play.game.physics.arcade.enable(player2);
-//        player2.body.collideWordBounds = true;
-//        this.game.physics.arcade.enable(player2);
-
         setup_players();
+        generate_terrain();
     }
     
     function setup_players() {
         
         player_group = play.game.add.group();
-        //player_group.enableBody = true;
-        //play.game.physics.arcade.enable(player_group);
-        //player_group.body.collideWorldBounds = true;
-        
         player = player_group.create(100, 100, 'square');
-        //player.
         player2 = player_group.create(300, 300, 'square');
         
-        //player = play.game.add.sprite(100, 100, 'square');
         play.game.physics.arcade.enable(player);
         player.body.collideWorldBounds = true;
         
-        //player2 = play.game.add.sprite(300, 300, 'square');
         play.game.physics.arcade.enable(player2);
         player2.body.collideWorldBounds = true;
-
-        //player.animations.add('left', [0,1,2,3], 10, true);
-        //player.animations.add('right', [5,6,7,8], 10, true);
+    }
+    
+    function generate_terrain() {
+        tile_group = play.game.add.group();
+        tile_group.enableBody = true;
         
-        //RainGame.game.camera.follow(player);
+        var tiles = 20;
+        for (var n = 0; n < tiles; n++) {
+            var x = Math.random() * 500;
+            var y = Math.random() * 500;
+            var tile = tile_group.create(x, y, 'tile');
+            tile.body.immovable = true;
+        }
     }
     
     function update() {
@@ -88,6 +74,7 @@ and open the template in the editor.
         update_player2_movement();
         
         play.game.physics.arcade.collide(player, player2, this.death_handler, null, this);
+        play.game.physics.arcade.collide(player_group, tile_group);
     }
     
     function death_handler() {
