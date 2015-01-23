@@ -34,6 +34,14 @@ and open the template in the editor.
     
     var player;
     var player2;
+    
+    var tile_size = 32;
+    var dirEnum = {
+        Up : 0,
+        Down : 1,
+        Left : 2,
+        Right : 3
+    }
 
     function create() {
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -61,8 +69,8 @@ and open the template in the editor.
         
         var tiles = 20;
         for (var n = 0; n < tiles; n++) {
-            var x = Math.floor(Math.random() * 15) * 32;
-            var y = Math.floor(Math.random() * 15) * 32;
+            var x = Math.floor(Math.random() * 15) * tile_size;
+            var y = Math.floor(Math.random() * 15) * tile_size;
             var tile = tile_group.create(x, y, 'tile');
             tile.body.immovable = true;
         }
@@ -71,6 +79,8 @@ and open the template in the editor.
     var delay = 200;
     var player1_move_time = 0;
     var player2_move_time = 0;
+    
+    var tile_size = 32;
     
     function update() {
         //console.log("hej!");
@@ -99,24 +109,17 @@ and open the template in the editor.
         player.body.velocity.x = 0;
         player.body.velocity.y = 0;
         
-        var speed = 150;
-        var jump_length = 32;
-        
         if (cursors.right.isDown) {
-            //player.body.velocity.x = speed;
-            player.body.position.x += jump_length;
+            move(dirEnum.Right, player);
         }
         else if (cursors.left.isDown) {
-            //player.body.velocity.x = -speed;
-            player.body.position.x -= jump_length;
+            move(dirEnum.Left, player);
         }
         else if (cursors.up.isDown) {
-            //player.body.velocity.y = -speed;
-            player.body.position.y -= jump_length;
+            move(dirEnum.Up, player);
         }
         else if (cursors.down.isDown) {
-            //player.body.velocity.y = speed;
-            player.body.position.y += jump_length;
+            move(dirEnum.Down, player);
         }
     }
     
@@ -133,20 +136,33 @@ and open the template in the editor.
         var speed = 150;
         
         if (upKey.isDown) {
-            player2.body.velocity.y = -speed;
+            move(dirEnum.Up, player2);
         }
         else if (leftKey.isDown) {
-            player2.body.velocity.x = -speed;
+            move(dirEnum.Left, player2);
         }
         else if (rightKey.isDown) {
-            player2.body.velocity.x = speed;
+            move(dirEnum.Right, player2);
         }
         else if (downKey.isDown) {
-            player2.body.velocity.y = speed;
+            move(dirEnum.Down, player2);
         }
     }
     
-    
+    function move(dir, obj){
+        if (dir == dirEnum.Right) {
+            obj.body.position.x += tile_size;
+        }
+        else if (dir == dirEnum.Left) {
+            obj.body.position.x -= tile_size;
+        }
+        else if (dir == dirEnum.Up) {
+            obj.body.position.y -= tile_size;
+        }
+        else if (dir == dirEnum.Down) {
+            obj.body.position.y += tile_size;
+        }
+    }
 
 </script>
 </body>
