@@ -22,7 +22,7 @@ and open the template in the editor.
 <script>
 
     var play = play || {};
-    play.game = new Phaser.Game(500, 500, Phaser.AUTO, 'phaser_window', { preload: preload, create: create, update: update });
+    play.game = new Phaser.Game(480, 480, Phaser.AUTO, 'phaser_window', { preload: preload, create: create, update: update });
     
     function preload() {
         this.game.load.image('square', 'purple_sq.png');
@@ -45,8 +45,8 @@ and open the template in the editor.
     function setup_players() {
         
         player_group = play.game.add.group();
-        player = player_group.create(100, 100, 'square');
-        player2 = player_group.create(300, 300, 'square');
+        player = player_group.create(64, 64, 'square');
+        player2 = player_group.create(128, 128, 'square');
         
         play.game.physics.arcade.enable(player);
         player.body.collideWorldBounds = true;
@@ -61,17 +61,29 @@ and open the template in the editor.
         
         var tiles = 20;
         for (var n = 0; n < tiles; n++) {
-            var x = Math.random() * 500;
-            var y = Math.random() * 500;
+            var x = Math.floor(Math.random() * 15) * 32;
+            var y = Math.floor(Math.random() * 15) * 32;
             var tile = tile_group.create(x, y, 'tile');
             tile.body.immovable = true;
         }
     }
     
+    var delay = 200;
+    var player1_move_time = 0;
+    var player2_move_time = 0;
+    
     function update() {
         //console.log("hej!");
-        update_player1_movement();
-        update_player2_movement();
+        
+        if (play.game.time.now > player1_move_time) {
+            update_player1_movement();
+            player1_move_time = play.game.time.now + delay;
+        }
+
+        if (play.game.time.now > player2_move_time) {
+            update_player2_movement();
+            player2_move_time = play.game.time.now + delay;
+        }
         
         play.game.physics.arcade.collide(player, player2, this.death_handler, null, this);
         play.game.physics.arcade.collide(player_group, tile_group);
@@ -88,18 +100,23 @@ and open the template in the editor.
         player.body.velocity.y = 0;
         
         var speed = 150;
+        var jump_length = 32;
         
         if (cursors.right.isDown) {
-            player.body.velocity.x = speed;
+            //player.body.velocity.x = speed;
+            player.body.position.x += jump_length;
         }
         else if (cursors.left.isDown) {
-            player.body.velocity.x = -speed;
+            //player.body.velocity.x = -speed;
+            player.body.position.x -= jump_length;
         }
         else if (cursors.up.isDown) {
-            player.body.velocity.y = -speed;
+            //player.body.velocity.y = -speed;
+            player.body.position.y -= jump_length;
         }
         else if (cursors.down.isDown) {
-            player.body.velocity.y = speed;
+            //player.body.velocity.y = speed;
+            player.body.position.y += jump_length;
         }
     }
     
@@ -128,6 +145,8 @@ and open the template in the editor.
             player2.body.velocity.y = speed;
         }
     }
+    
+    
 
 </script>
 </body>
