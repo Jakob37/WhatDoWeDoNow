@@ -24,9 +24,13 @@ and open the template in the editor.
     var play = play || {};
     play.game = new Phaser.Game(480, 480, Phaser.AUTO, 'phaser_window', { preload: preload, create: create, update: update });
     
+    var sfx;
+    
     function preload() {
         this.game.load.image('square', 'purple_sq.png');
         this.game.load.image('tile', 'green_sq.png');
+        
+        this.game.load.audio('sfx', ['sound/random_sound1.wav']);
     }
     
     var player_group;
@@ -45,6 +49,7 @@ and open the template in the editor.
 
     function create() {
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
+        sfx = play.game.add.audio('sfx');
         
         setup_players();
         generate_terrain();
@@ -84,6 +89,9 @@ and open the template in the editor.
     
     function update() {
         //console.log("hej!");
+        
+        //sfx.play('');
+
         
         if (play.game.time.now > player1_move_time) {
             update_player1_movement();
