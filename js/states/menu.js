@@ -17,12 +17,17 @@ menu.prototype = {
         var text = this.game.add.text(this.game.world.centerX, this.game.world.centerY - 100, "Two Blocks", style);
 
         text.anchor.set(0.5);
+        
+
     },
     start_click: function() {
         this.game.state.start('Play');
     },
     update: function() {
-        
+        var key = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+        if (key.isDown) {
+            this.game.state.start('Play');
+        }
     }
     
 };
