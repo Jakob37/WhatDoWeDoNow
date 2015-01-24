@@ -14,7 +14,7 @@ var player2_move_time = 0;
 
 Player2.prototype.update = function() {
   
-    if (this.game.time.now > player1_move_time) {
+    if (this.game.time.now > player2_move_time) {
         this.update_movement();
         player2_move_time = this.game.time.now + delay;
     }  
