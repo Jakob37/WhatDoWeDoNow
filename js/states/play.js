@@ -3,11 +3,12 @@ var play = function(game) {
 };
 
 var player_group;
-var tile_group;
+var block_group;
+
+var tile_size = 32;
 
 var delay = 150;
 
-var tile_size = 32;
 
 var test_tile;
 var sfx;
@@ -29,58 +30,61 @@ play.prototype = {
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
         sfx = this.game.add.audio('sfx');
 
+        player_group = this.game.add.group();
+        block_group = this.game.add.group();
+        
         this.setup_players();
-        this.generate_terrain();        
+        
+        this.generate_terrain();
     },
     
     setup_players: function() {
 
         player_group = this.game.add.group();
-        player = new Player(this, 64, 64);
-        player2 = new Player2(this, 256, 256);
+        var player = new Player(this, 64, 64);
+        var player2 = new Player2(this, 256, 256);
         player_group.add(player);
         player_group.add(player2);
 
     },
     
     generate_terrain: function() {
-        tile_group = this.game.add.group();
-        tile_group.enableBody = true;
         
-        var tiles = 4;
+        var tiles = 10;
         for (var n = 0; n < tiles; n++) {
-            this.create_random_tile(tile_group);            
+            this.create_random_tile();            
         }
     },
-    create_random_tile: function(tile_group) {
+    
+    create_random_tile: function() {
         var x = this.get_random_tile_pos();
         var y = this.get_random_tile_pos();
         
         var block_number = Math.floor(Math.random() * 3);
-        
-        var tile;
+
+        var block;        
         if (block_number === 0) {
-            tile = new SquareBlock(this, x, y);
+            block = new SquareBlock(this, x, y);
         }
         else if (block_number === 1) {
-            tile = new LBlock(this, x, y);            
+            block = new LBlock(this, x, y);            
         }
         else if (block_number === 2) {
-            tile = new LongBlock(this, x, y);            
+            block = new LongBlock(this, x, y);            
         }
         
-        tile_group.add(tile);
-
+        block_group.add(block);
     },
     get_random_tile_pos: function() {
         return Math.floor(Math.random() * 15) * tile_size;
     },
     
     update: function() {
-//        tile_group.forEach(function () {
-//            this.update();
-//        });
-        this.game.physics.arcade.collide(player, player2);
-        this.game.physics.arcade.collide(player_group, tile_group);
+
+        this.game.physics.arcade.collide(player_group, player_group);
+        
+        block_group.forEach(function(sub_block) {
+            this.game.physics.arcade.collide(player_group, sub_block);
+        }, this);        
     }
-};
+}
