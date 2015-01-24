@@ -8,9 +8,7 @@ var block_group;
 var tile_size = 32;
 
 var delay = 150;
-var player2_move_time = 0;
 
-var tile_size = 32;
 
 var test_tile;
 var sfx;
@@ -48,11 +46,6 @@ play.prototype = {
         player_group.add(player);
         player_group.add(player2);
 
-        this.game.physics.arcade.enable(player);
-        player.body.collideWorldBounds = true;
-
-        this.game.physics.arcade.enable(player2);
-        player2.body.collideWorldBounds = true;
     },
     
     generate_terrain: function() {
