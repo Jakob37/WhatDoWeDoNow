@@ -14,6 +14,8 @@ and open the template in the editor.
         <script src="require.js"></script>
         <script src="js/game.js"></script>
         
+        <!-- States -->
+        <script src="js/states/menu.js"></script>
         <script src="js/states/play.js"></script>
         
         <!-- Prefabs -->
@@ -27,8 +29,9 @@ and open the template in the editor.
 
             // Game States
             game.state.add('Play', play);
+            game.state.add('Menu', menu);
 
-            game.state.start('Play');
+            game.state.start('Menu');
         })();
     </script>
             
