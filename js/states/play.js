@@ -5,6 +5,8 @@ var play = function(game) {
 var player_group;
 var block_group;
 
+var player;
+
 var tile_size = 32;
 
 var delay = 150;
@@ -34,20 +36,21 @@ play.prototype = {
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
         sfx = this.game.add.audio('sfx');
         music = this.game.add.audio('colored_squares_song');
-        music.play();
+        //music.play();
 
         player_group = this.game.add.group();
         block_group = this.game.add.group();
         
         this.setup_players();
         
-        //this.generate_terrain();
+        this.generate_terrain();
+        this.create_square_pair();
     },
     
     setup_players: function() {
 
         player_group = this.game.add.group();
-        var player = new Player(this, 64, 64);
+        player = new Player(this, 64, 64);
         var player2 = new Player2(this, 256, 256);
         player_group.add(player);
         player_group.add(player2);
@@ -56,10 +59,17 @@ play.prototype = {
     
     generate_terrain: function() {
         
-        var tiles = 4;
+        var tiles = 0;
         for (var n = 0; n < tiles; n++) {
             this.create_random_tile();            
         }
+    },
+    
+    create_square_pair: function() {
+        var block = new SquareBlock(this, 200, 0, 1);
+        var block2 = new SquareBlock(this, 200, 480, 0);
+        block_group.add(block);
+        block_group.add(block2);
     },
     
     create_random_tile: function() {
@@ -69,18 +79,20 @@ play.prototype = {
         var x = this.get_x(direction);
         var y = this.get_y(direction);
         
-        var block_number = Math.floor(Math.random() * 3);
-
-        var block;        
-        if (block_number === 0) {
-            block = new SquareBlock(this, x, y, direction);
-        }
-        else if (block_number === 1) {
-            block = new LBlock(this, x, y, direction);
-        }
-        else if (block_number === 2) {
-            block = new LongBlock(this, x, y, direction);    
-        }
+        var block = new SquareBlock(this, x, y, direction);
+        
+//        var block_number = Math.floor(Math.random() * 3);
+//
+//        var block;        
+//        if (block_number === 0) {
+//            block = new SquareBlock(this, x, y, direction);
+//        }
+//        else if (block_number === 1) {
+//            block = new LBlock(this, x, y, direction);
+//        }
+//        else if (block_number === 2) {
+//            block = new LongBlock(this, x, y, direction);    
+//        }
         
         block_group.add(block);
     },
@@ -118,21 +130,27 @@ play.prototype = {
     
     update: function() {
 
-        this.game.physics.arcade.collide(player_group, player_group);
+        this.game.physics.arcade.collide(player_group, player_group, self.test_func, null, this);
         
         block_group.forEach(function(sub_block) {
-            this.game.physics.arcade.collide(player_group, sub_block);
-            //sub_block.prototype.update();
+            //this.game.physics.arcade.collide(player, sub_block);
+            
+            if(sub_block.is_moving) {
+                sub_block.willCollide(block_group); 
+                //sub_block.stopMovement();
+            }
+            
+            if(sub_block.is_moving) {
+                sub_block.update_movement();
+            }
         }, this);
-        
-        this.tile_generator();
     },
     
     tile_generator: function() {
         if (this.game.time.now > create_time) {
             this.create_random_tile();
             create_time = this.game.time.now + create_delay;
-            create_delay *= 0.95;
+            create_delay *= 0.98;
             console.log("Current delay: " + create_delay);
         }
     }
