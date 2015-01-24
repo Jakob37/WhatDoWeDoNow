@@ -22,8 +22,6 @@ Player.prototype.update = function() {
 
 Player.prototype.update_movement = function() {
     var cursors = this.game.input.keyboard.createCursorKeys();
-    player.body.velocity.x = 0;
-    player.body.velocity.y = 0;
 
     if (cursors.right.isDown) {
         GameObject.prototype.move(this, dirEnum.Right);

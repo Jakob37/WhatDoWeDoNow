@@ -26,9 +26,6 @@ Player2.prototype.update_movement = function() {
     var rightKey = this.game.input.keyboard.addKey(Phaser.Keyboard.D);
     var downKey = this.game.input.keyboard.addKey(Phaser.Keyboard.S);
 
-    player2.body.velocity.x = 0;
-    player2.body.velocity.y = 0;
-
     if (upKey.isDown) {
         GameObject.prototype.move(this, dirEnum.Up);
     }
