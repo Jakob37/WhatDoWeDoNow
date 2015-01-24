@@ -12,15 +12,8 @@ var player;
 var player2;
 
 var tile_size = 32;
-var dirEnum = {
-    Up : 0,
-    Down : 1,
-    Left : 2,
-    Right : 3
-};
 
 var delay = 150;
-var player1_move_time = 0;
 var player2_move_time = 0;
 
 var tile_size = 32;
@@ -51,7 +44,7 @@ play.prototype = {
 
         player_group = this.game.add.group();
         player = new Player(this, 64, 64);
-        player2 = new Player(this, 256, 256);
+        player2 = new Player2(this, 256, 256);
         player_group.add(player);
         player_group.add(player2);
 
@@ -92,22 +85,22 @@ play.prototype = {
     },
 
     update_player1_movement: function(player) {
-        var cursors = this.game.input.keyboard.createCursorKeys();
-        player.body.velocity.x = 0;
-        player.body.velocity.y = 0;
-
-        if (cursors.right.isDown) {
-            this.move(dirEnum.Right, player);
-        }
-        else if (cursors.left.isDown) {
-            this.move(dirEnum.Left, player);
-        }
-        else if (cursors.up.isDown) {
-            this.move(dirEnum.Up, player);
-        }
-        else if (cursors.down.isDown) {
-            this.move(dirEnum.Down, player);
-        }
+//        var cursors = this.game.input.keyboard.createCursorKeys();
+//        player.body.velocity.x = 0;
+//        player.body.velocity.y = 0;
+//
+//        if (cursors.right.isDown) {
+//            this.move(dirEnum.Right, player);
+//        }
+//        else if (cursors.left.isDown) {
+//            this.move(dirEnum.Left, player);
+//        }
+//        else if (cursors.up.isDown) {
+//            this.move(dirEnum.Up, player);
+//        }
+//        else if (cursors.down.isDown) {
+//            this.move(dirEnum.Down, player);
+//        }
     },
 
     update_player2_movement: function(player2) {
