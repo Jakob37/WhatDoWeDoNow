@@ -89,6 +89,7 @@ play.prototype = {
         
         block_group.forEach(function(sub_block) {
             this.game.physics.arcade.collide(player_group, sub_block);
+            //sub_block.prototype.update();
         }, this);        
     }
-}
+};

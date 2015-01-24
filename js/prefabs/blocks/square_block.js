@@ -24,3 +24,9 @@ SquareBlock.prototype.addComponent = function(xpos, ypos, xtile, ytile) {
     this.add(this.tile);
 };
 
+SquareBlock.prototype.update = function() {
+    this.forEach(function(component) {
+        console.log("In update movement");
+        GameObject.prototype.move(component, dirEnum.Down);
+    }, this);
+};
