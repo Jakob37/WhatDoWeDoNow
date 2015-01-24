@@ -1,5 +1,4 @@
 var menu = function(game) {
-    //alert("hi!");
 };
 
 menu.prototype = {
@@ -12,6 +11,12 @@ menu.prototype = {
         this.start_button = this.game.add.button(this.game.width / 2, this.game.height / 2, 
             'start_button', this.start_click, this);
         this.start_button.anchor.setTo(0.5, 0.5);
+        
+        var style = { font: 'bold 45pt Arial', fill: 'white', align: 'left', wordWrap: true, wordWrapWidth: 450 };
+
+        var text = this.game.add.text(this.game.world.centerX, this.game.world.centerY - 100, "Two Blocks", style);
+
+        text.anchor.set(0.5);
     },
     start_click: function() {
         this.game.state.start('Play');
