@@ -5,7 +5,7 @@ var BlockComponent = function(game, x, y) {
 
     this.game.physics.arcade.enableBody(this);
     this.body.allowGravity = false;
-    this.body.immovable = true;  
+    this.body.immovable = true;
 };
 
 BlockComponent.prototype = Object.create(Phaser.Sprite.prototype);

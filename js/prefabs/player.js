@@ -15,8 +15,8 @@ var player1_move_time = 0;
 Player.prototype.update = function() {
   
     if (this.game.time.now > player1_move_time) {
-      this.update_movement();
-      player1_move_time = this.game.time.now + delay;
+        this.update_movement();
+        player1_move_time = this.game.time.now + delay;
     }
 };
 

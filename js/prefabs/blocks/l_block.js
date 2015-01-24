@@ -1,10 +1,13 @@
 'use strict';
 
-var LBlock = function(game, x, y) {
+var LBlock = function(game, x, y, direction) {
     Phaser.Group.call(this, game);
 
     self.tile_size = 32;
     self.color = 0x00ff00;
+    this.move_time = 0;
+    this.move_time_delay = 300;
+    this.direction = direction;
     
     this.addComponent(x, y, 0, 0);
     this.addComponent(x, y, 0, 1);
@@ -24,9 +27,10 @@ LBlock.prototype.addComponent = function(xpos, ypos, xtile, ytile) {
 };
 
 LBlock.prototype.update = function() {
-    this.forEach(function(component) {
-        console.log("In update movement");
-        GameObject.prototype.move(component, dirEnum.Down);
-    }, this);
+    
+    if (this.game.time.now > this.move_time) {
+        move_blocks_in_group(this, this.direction);
+        this.move_time = this.game.time.now + this.move_time_delay;
+    }
 };
 
