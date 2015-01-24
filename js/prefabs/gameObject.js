@@ -16,17 +16,17 @@ var GameObject = function( game, x, y) {
 GameObject.prototype = Object.create(Phaser.Sprite.prototype);
 GameObject.prototype.constructor = GameObject;
 
-GameObject.prototype.move = function(dir) {
-            if (dir == dirEnum.Right) {
-                this.body.position.x += tile_size;
+GameObject.prototype.move = function(instance, dir) {
+            if (dir === dirEnum.Right) {
+                instance.body.position.x += tile_size;
             }
-            else if (dir == dirEnum.Left) {
-                this.body.position.x -= tile_size;
+            else if (dir === dirEnum.Left) {
+                instance.body.position.x -= tile_size;
             }
-            else if (dir == dirEnum.Up) {
-                this.body.position.y -= tile_size;
+            else if (dir === dirEnum.Up) {
+                instance.body.position.y -= tile_size;
             }
-            else if (dir == dirEnum.Down) {
-                this.body.position.y += tile_size;
+            else if (dir === dirEnum.Down) {
+                instance.body.position.y += tile_size;
             }
 };

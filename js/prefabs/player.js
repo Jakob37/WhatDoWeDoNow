@@ -15,10 +15,9 @@ var player1_move_time = 0;
 Player.prototype.update = function() {
   
     if (this.game.time.now > player1_move_time) {
-      this.update_movement(player);
+      this.update_movement();
       player1_move_time = this.game.time.now + delay;
     }
-  
 };
 
 Player.prototype.update_movement = function() {
@@ -27,19 +26,15 @@ Player.prototype.update_movement = function() {
     player.body.velocity.y = 0;
 
     if (cursors.right.isDown) {
-        this.move(dirEnum.Right, player);
+        GameObject.prototype.move(this, dirEnum.Right);
     }
     else if (cursors.left.isDown) {
-        this.move(dirEnum.Left, player);
+        GameObject.prototype.move(this, dirEnum.Left);
     }
     else if (cursors.up.isDown) {
-        this.move(dirEnum.Up, player);
+        GameObject.prototype.move(this, dirEnum.Up);
     }
     else if (cursors.down.isDown) {
-        this.move(dirEnum.Down, player);
+        GameObject.prototype.move(this, dirEnum.Down);
     }
-};
-
-Player.prototype.move = function(dir) {
-    this.constructor.prototype.move(dir);
 };
