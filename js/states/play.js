@@ -12,6 +12,7 @@ var delay = 150;
 
 var test_tile;
 var sfx;
+var music;
 
 play.prototype = {
 
@@ -23,12 +24,15 @@ play.prototype = {
         this.game.load.image('long_block', 'sprites/long_block.png');
         this.game.load.image('square_block', 'sprites/square_block.png');
 
+        this.game.load.audio('colored_squares_song', 'sound/testsong1.ogg');
         this.game.load.audio('sfx', ['sound/random_sound1.wav']);
     },
     
     create: function() {
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
         sfx = this.game.add.audio('sfx');
+        music = this.game.add.audio('colored_squares_song');
+        music.play();
 
         player_group = this.game.add.group();
         block_group = this.game.add.group();
