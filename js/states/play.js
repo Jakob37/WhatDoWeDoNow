@@ -36,6 +36,10 @@ play.prototype = {
         this.game.load.image('square', 'sprites/purple_sq.png');
         this.game.load.image('tile', 'sprites/green_sq.png');
 
+        this.game.load.image('l_block', 'sprites/l_block.png');
+        this.game.load.image('long_block', 'sprites/long_block.png');
+        this.game.load.image('square_block', 'sprites/square_block.png');
+
         this.game.load.audio('sfx', ['sound/random_sound1.wav']);
     },
     
@@ -65,14 +69,45 @@ play.prototype = {
     generate_terrain: function() {
         tile_group = this.game.add.group();
         tile_group.enableBody = true;
-
-        var tiles = 20;
+        
+        var tiles = 4;
         for (var n = 0; n < tiles; n++) {
-            var x = Math.floor(Math.random() * 15) * tile_size;
-            var y = Math.floor(Math.random() * 15) * tile_size;
-            var tile = new Tile(this, x, y);
-            tile_group.add(tile);
+            this.create_random_tile(tile_group);            
         }
+        
+        
+        
+
+//        var tiles = 20;
+//        for (var n = 0; n < tiles; n++) {
+//            var x = self.get_random_tile_pos();
+//            var y = self.get_random_tile_pos();
+//            var tile = new Tile(this, x, y);
+//            tile_group.add(tile);
+//        }
+    },
+    create_random_tile: function(tile_group) {
+        var x = this.get_random_tile_pos();
+        var y = this.get_random_tile_pos();
+        
+        var block_number = Math.floor(Math.random() * 3);
+        
+        var tile;
+        if (block_number === 0) {
+            tile = new SquareBlock(this, x, y);
+        }
+        else if (block_number === 1) {
+            tile = new LBlock(this, x, y);            
+        }
+        else if (block_number === 2) {
+            tile = new LongBlock(this, x, y);            
+        }
+        
+        tile_group.add(tile);
+
+    },
+    get_random_tile_pos: function() {
+        return Math.floor(Math.random() * 15) * tile_size;
     },
     
     update: function() {

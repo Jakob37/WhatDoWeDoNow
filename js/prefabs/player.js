@@ -1,4 +1,4 @@
-    'use strict';
+'use strict';
 
 var Player = function(game, x, y) {
     GameObject.call(this, game, x, y, 'square');
