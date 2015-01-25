@@ -6,8 +6,6 @@ var player_group;
 var block_group;
 var stopped_block_group;
 
-var player;
-
 var tile_size = 32;
 
 var delay = 150;
@@ -52,8 +50,8 @@ play.prototype = {
     setup_players: function() {
 
         player_group = this.game.add.group();
-        player = new Player(this, 128, 224);
-        var player2 = new Player2(this, 320, 224);
+        var player = new Player(this, 320, 224);
+        var player2 = new Player2(this, 128, 224);
         player_group.add(player);
         player_group.add(player2);
 
