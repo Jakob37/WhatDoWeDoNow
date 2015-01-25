@@ -209,8 +209,8 @@ play.prototype = {
                 var finish_time = Math.floor((this.game.time.now - start_time) / 1000);
                 end_text.text = "You are clogged! \n" + finish_time + " seconds";
                 is_game_over = true;
+                this.game.latest_time = finish_time;
                 this.game.state.start('End');
-
             }
         }
     },
