@@ -134,9 +134,14 @@ play.prototype = {
 
         this.game.physics.arcade.collide(player_group, player_group, self.test_func, null, this);
         
+        // Update players
+        player_group.forEach(function(player){
+            player.update_player();
+        }, this);
+        
         // Collision
         block_group.forEach(function(sub_block) {
-            this.game.physics.arcade.collide(player, sub_block);
+            this.game.physics.arcade.collide(player_group, sub_block);
             if(sub_block.is_moving) {
 
                 if (sub_block.willCollide(block_group) ||

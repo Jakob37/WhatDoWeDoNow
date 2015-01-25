@@ -13,6 +13,9 @@ var BlockComponent = function(game, x, y) {
 BlockComponent.prototype = Object.create(Phaser.Sprite.prototype);
 BlockComponent.prototype.constructor = BlockComponent;
 
+BlockComponent.prototype.setTint = function(color) {
+    this.tint = color;
+};
 
 BlockComponent.prototype.damage = function() {
     

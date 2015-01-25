@@ -8,7 +8,7 @@ var SquareBlock = function(game, x, y, direction) {
     console.log(this.getRandomColor());
     self.damped_color = 0x999999;
     this.move_time = 0;
-    this.move_time_delay = 1000;
+    this.move_time_delay = 100;
     this.direction = direction;
     
     this.is_moving = true;
@@ -34,7 +34,8 @@ SquareBlock.prototype.getRandomColor = function() {
 SquareBlock.prototype.addComponent = function(xpos, ypos, xtile, ytile) {
     this.tile = new BlockComponent(this.game, xpos + xtile*self.tile_size, 
         ypos + ytile*self.tile_size);
-    this.tile.tint = self.color;
+    //this.tile.tint = self.color;
+    this.tile.setTint(self.color);
 
     this.add(this.tile);
     return this.tile;
