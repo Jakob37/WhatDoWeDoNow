@@ -41,9 +41,11 @@ Player2.prototype.update_movement = function(block_group) {
     }
     
     if (attempted_pos !== null) {
-        var collide_component = GameObject.prototype.getComponentAt(block_group, attempted_pos[0], attempted_pos[1]);
-        if (collide_component !== null) {
-            collide_component.damage();
+        var collide_components = GameObject.prototype.getComponentsAt(block_group, attempted_pos[0], attempted_pos[1]);
+        if (collide_components.length !== 0) {
+            collide_components.forEach(function(collide_component) {
+                collide_component.damage();                
+            }, this);            
         }
     }
 };
