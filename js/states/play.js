@@ -166,5 +166,5 @@ play.prototype = {
             create_time = this.game.time.now + create_delay;
             create_delay *= 0.98;
         }
-    }
+    },
 };

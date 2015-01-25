@@ -98,6 +98,11 @@ SquareBlock.prototype.willCollide = function(block_group) {
         }
         
         block.forEach(function(component) {
+            
+            if (component.isDead()) {
+                return;
+            }
+            
             var collidePositions = this.getCollidePositions();
             var componentPosition = [component.position.x, component.position.y];
             var colliding = this.checkCollision(collidePositions, componentPosition);
@@ -130,14 +135,9 @@ SquareBlock.prototype.checkCollision = function(collidePositions, componentPosit
     var collision_detected = false;
     collidePositions.forEach(function(pos) {
         
-        //console.log("collider: " + pos + " other component: " + componentPosition);
-        
         if (pos[0] === componentPosition[0] && pos[1] === componentPosition[1]) {
-            //console.log(">>>>>>>>>>>>>>>>>>>> HIT! >>>>>>>>>>>>>>>>>>>>>");
-            //this.stopMovement();
             collision_detected = true;
         }
     }, this);
-    //console.log("is detected ? " + collision_detected);
     return collision_detected;
 };

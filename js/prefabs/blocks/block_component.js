@@ -24,3 +24,7 @@ BlockComponent.prototype.damage = function() {
         this.kill();
     }
 };
+
+BlockComponent.prototype.isDead = function() {
+    return this.health <= 0;
+};
