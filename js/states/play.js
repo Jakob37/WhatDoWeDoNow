@@ -6,6 +6,8 @@ var player_group;
 var block_group;
 var stopped_block_group;
 
+var text;
+
 var tile_size = 32;
 
 var delay = 150;
@@ -35,16 +37,25 @@ play.prototype = {
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
         sfx = this.game.add.audio('sfx');
         music = this.game.add.audio('colored_squares_song');
-        //music.play();
 
         player_group = this.game.add.group();
         block_group = this.game.add.group();
         stopped_block_group = this.game.add.group();
         
+        var style = { font: "45px Arial", fill: "white", align: "center" };
+        text = this.game.add.text(this.game.world.centerX, this.game.world.centerY -100, "What will we do now?", style);
+        text.anchor.set(0.5);
+        this.game.time.events.add(Phaser.Timer.SECOND * 1.5, this.remove_text, this);
+        
         this.setup_players();
         
         this.generate_terrain();
         //this.create_square_pair();
+    },
+    
+    remove_text: function() {
+        this.game.add.tween(text).to( { alpha: 0 }, 1000, Phaser.Easing.Linear.None, true);
+        //music.play();
     },
     
     setup_players: function() {
