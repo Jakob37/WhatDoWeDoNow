@@ -22,6 +22,13 @@ var music;
 var info_text;
 var max_clog = 80;
 
+var end_text;
+
+var start_time;
+var end_time;
+
+var is_game_over = false;
+
 play.prototype = {
 
     preload: function() {
@@ -55,7 +62,14 @@ play.prototype = {
         this.generate_terrain();
         info_text = this.game.add.text(10, 10, 'Clogged tiles: ',
             {fontSize: '12px', fill:'#fff'});
+
+        end_text = this.game.add.text(this.game.width/2, this.game.height/2, '',
+            {fontSize: '36px', fill:'#fff'});
+        end_text.anchor.set(0.5, 0.5);
+        
         //this.create_square_pair();
+        
+        start_time = this.game.time.now;
     },
     
     remove_text: function() {
@@ -146,47 +160,62 @@ play.prototype = {
     
     update: function() {
 
-        this.game.physics.arcade.collide(player_group, player_group, self.test_func, null, this);
+        if (!is_game_over) {
+            this.game.physics.arcade.collide(player_group, player_group, self.test_func, null, this);
         
-        // Update players
-        player_group.forEach(function(pl){
-            pl.update_player(block_group);
-        }, this);
-        
-        // Collision
-        block_group.forEach(function(sub_block) {
-            this.game.physics.arcade.collide(player_group, sub_block);
-            if(sub_block.is_moving) {
+            // Update players
+            player_group.forEach(function(pl){
+                pl.update_player(block_group);
+            }, this);
 
-                if (sub_block.willCollide(block_group) ||
-                        sub_block.willCollidePlayer(player_group)) {
-                    console.log("stopping movement!");
-                    sub_block.stopMovement();
-                }
-            }
-        }, this);
-        
-        // Movement
-        block_group.forEach(function(sub_block) {
-            if(sub_block.is_moving) {
-                sub_block.update_movement();
-            }
-        }, this);
-        
-        // Check for components dead outside
-        block_group.forEach(function(sub_block) {
-            if (!sub_block.is_moving) {
-                sub_block.forEach(function(component){
-                    if (component.isOutside()) {
-                        component.kill();
+            // Collision
+            block_group.forEach(function(sub_block) {
+                this.game.physics.arcade.collide(player_group, sub_block);
+                if(sub_block.is_moving) {
+
+                    if (sub_block.willCollide(block_group) ||
+                            sub_block.willCollidePlayer(player_group)) {
+                        console.log("stopping movement!");
+                        sub_block.stopMovement();
                     }
-                }, this);
+                }
+            }, this);
+
+            // Movement
+            block_group.forEach(function(sub_block) {
+                if(sub_block.is_moving) {
+                    sub_block.update_movement();
+                }
+            }, this);
+
+            // Check for components dead outside
+            block_group.forEach(function(sub_block) {
+                if (!sub_block.is_moving) {
+                    sub_block.forEach(function(component){
+                        if (component.isOutside()) {
+                            component.kill();
+                        }
+                    }, this);
+                }
+            }, this);
+
+            this.tile_generator();
+            
+            var clog = this.count_stopped_blocks();
+            info_text.text = "Clogged tiles: " + this.count_stopped_blocks() + " / " + max_clog;
+
+            if(clog >= max_clog) {
+                var finish_time = Math.floor((this.game.time.now - start_time) / 1000);
+                end_text.text = "You are clogged! \n" + finish_time + " seconds";
+                is_game_over = true;
             }
-        }, this);
+
+        }
+
+
         
-        this.tile_generator();
         
-        info_text.text = "Clogged tiles: " + this.count_stopped_blocks() + " / " + max_clog;
+        
     },
     
     tile_generator: function() {
