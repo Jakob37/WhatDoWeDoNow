@@ -12,10 +12,10 @@ Player.prototype.constructor = Player;
 
 var player1_move_time = 0;
 
-Player.prototype.update = function() {
+Player.prototype.update_player = function(block_group) {
   
     if (this.game.time.now > player1_move_time) {
-        this.update_movement();
+        this.update_movement(block_group);
         player1_move_time = this.game.time.now + delay;
     }
 };
@@ -25,7 +25,7 @@ Player.prototype.update_movement = function(block_group) {
 
     if (cursors.right.isDown) {
         GameObject.prototype.move(this, dirEnum.Right);
-        
+
 //        block_group.forEach(function(){
 //            console.log("hello!");
 //        });
@@ -40,3 +40,4 @@ Player.prototype.update_movement = function(block_group) {
         GameObject.prototype.move(this, dirEnum.Down);
     }
 };
+

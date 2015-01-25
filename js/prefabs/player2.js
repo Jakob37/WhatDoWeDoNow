@@ -12,15 +12,15 @@ Player2.prototype.constructor = Player2;
 
 var player2_move_time = 0;
 
-Player2.prototype.update = function() {
+Player2.prototype.update_player = function(block_group) {
   
     if (this.game.time.now > player2_move_time) {
-        this.update_movement();
+        this.update_movement(block_group);
         player2_move_time = this.game.time.now + delay;
     }  
 };
 
-Player2.prototype.update_movement = function() {
+Player2.prototype.update_movement = function(block_group) {
     var upKey = this.game.input.keyboard.addKey(Phaser.Keyboard.W);
     var leftKey = this.game.input.keyboard.addKey(Phaser.Keyboard.A);
     var rightKey = this.game.input.keyboard.addKey(Phaser.Keyboard.D);
