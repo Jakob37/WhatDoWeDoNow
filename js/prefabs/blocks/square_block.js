@@ -4,8 +4,9 @@ var SquareBlock = function(game, x, y, direction) {
     Phaser.Group.call(this, game);
 
     self.tile_size = 32;
-    self.color = 0xff0000;
-    self.damped_color = 0x990000;
+    self.color = this.getRandomColor();
+    console.log(this.getRandomColor());
+    self.damped_color = 0x999999;
     this.move_time = 0;
     this.move_time_delay = 1000;
     this.direction = direction;
@@ -23,7 +24,7 @@ SquareBlock.prototype.constructor = SquareBlock;
 
 SquareBlock.prototype.getRandomColor = function() {
     var letters = '0123456789ABCDEF'.split('');
-    var color = '#';
+    var color = '0x';
     for (var i = 0; i < 6; i++ ) {
         color += letters[Math.floor(Math.random() * 16)];
     }
