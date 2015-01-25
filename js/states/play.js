@@ -4,6 +4,7 @@ var play = function(game) {
 
 var player_group;
 var block_group;
+var stopped_block_group;
 
 var player;
 
@@ -12,7 +13,7 @@ var tile_size = 32;
 var delay = 150;
 
 var create_time = 0;
-var create_delay = 1000;
+var create_delay = 2000;
 
 var test_tile;
 var sfx;
@@ -40,11 +41,12 @@ play.prototype = {
 
         player_group = this.game.add.group();
         block_group = this.game.add.group();
+        stopped_block_group = this.game.add.group();
         
         this.setup_players();
         
         this.generate_terrain();
-        this.create_square_pair();
+        //this.create_square_pair();
     },
     
     setup_players: function() {
@@ -118,32 +120,41 @@ play.prototype = {
             return this.game.height;
         }
         else if (direction === 1) {
-            return 0;
+            return -2*tile_size;
         }
         else {
             alert("whats going on");
         }
     },
     get_random_tile_pos: function() {
-        return Math.floor(Math.random() * 15) * tile_size;
+        return Math.floor(Math.random() * 15 - 1) * tile_size;
     },
     
     update: function() {
 
         this.game.physics.arcade.collide(player_group, player_group, self.test_func, null, this);
         
+        // Collision
         block_group.forEach(function(sub_block) {
-            //this.game.physics.arcade.collide(player, sub_block);
-            
+            this.game.physics.arcade.collide(player, sub_block);
             if(sub_block.is_moving) {
-                sub_block.willCollide(block_group); 
-                //sub_block.stopMovement();
-            }
-            
-            if(sub_block.is_moving) {
-                sub_block.update_movement();
+
+                if (sub_block.willCollide(block_group) ||
+                        sub_block.willCollidePlayer(player_group)) {
+                    console.log("stopping movement!");
+                    sub_block.stopMovement();
+                }
             }
         }, this);
+        
+        // Movement
+        block_group.forEach(function(sub_block) {
+            if(sub_block.is_moving) {
+                    sub_block.update_movement();
+            }
+        }, this);
+        
+        this.tile_generator();
     },
     
     tile_generator: function() {

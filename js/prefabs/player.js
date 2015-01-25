@@ -20,11 +20,15 @@ Player.prototype.update = function() {
     }
 };
 
-Player.prototype.update_movement = function() {
+Player.prototype.update_movement = function(block_group) {
     var cursors = this.game.input.keyboard.createCursorKeys();
 
     if (cursors.right.isDown) {
         GameObject.prototype.move(this, dirEnum.Right);
+        
+//        block_group.forEach(function(){
+//            console.log("hello!");
+//        });
     }
     else if (cursors.left.isDown) {
         GameObject.prototype.move(this, dirEnum.Left);

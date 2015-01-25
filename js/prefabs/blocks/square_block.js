@@ -7,19 +7,28 @@ var SquareBlock = function(game, x, y, direction) {
     self.color = 0xff0000;
     self.damped_color = 0x990000;
     this.move_time = 0;
-    this.move_time_delay = 400;
+    this.move_time_delay = 1000;
     this.direction = direction;
     
     this.is_moving = true;
     
     this.origo_component = this.addComponent(x, y, 0, 0);
-//    this.addComponent(x, y, 1, 0);
-//    this.addComponent(x, y, 1, 1);
+    this.comp3 = this.addComponent(x, y, 1, 0);
+    this.comp4 = this.addComponent(x, y, 1, 1);
     this.second_com = this.addComponent(x, y, 0, 1);
 };
 
 SquareBlock.prototype = Object.create(Phaser.Group.prototype);
 SquareBlock.prototype.constructor = SquareBlock;
+
+SquareBlock.prototype.getRandomColor = function() {
+    var letters = '0123456789ABCDEF'.split('');
+    var color = '#';
+    for (var i = 0; i < 6; i++ ) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
 
 SquareBlock.prototype.addComponent = function(xpos, ypos, xtile, ytile) {
     this.tile = new BlockComponent(this.game, xpos + xtile*self.tile_size, 
@@ -38,13 +47,11 @@ SquareBlock.prototype.stopMovement = function() {
     this.is_moving = false;
     this.origo_component.tint = self.damped_color;
     this.second_com.tint = self.damped_color;
+    this.comp3.tint = self.damped_color;
+    this.comp4.tint = self.damped_color;
 };
 
 SquareBlock.prototype.update_movement = function() {
-
-    if (this.is_moving === false) {
-        console.log("Not moving!");
-    }
 
     if (this.is_moving === true && this.game.time.now > this.move_time) {
         
@@ -55,7 +62,7 @@ SquareBlock.prototype.update_movement = function() {
 
 SquareBlock.prototype.getCollidePositions = function() {
     
-    var coordinate = this.get_coordinate()
+    var coordinate = this.get_coordinate();
     if (coordinate === undefined) {
         return;
     }
@@ -63,11 +70,13 @@ SquareBlock.prototype.getCollidePositions = function() {
     var y = coordinate[1];
     var tile_size = 32;
     
+    var block_height = 2;
+    
     if (this.direction === 0) {
         return [[x, y - tile_size],[x+tile_size, y-tile_size]];
     }
     if (this.direction === 1) {
-        return [[x, y + 2*tile_size],[x+tile_size, y + 2*tile_size]];
+        return [[x, y + 2*tile_size],[x+tile_size, y + block_height*tile_size]];
     }
     if (this.direction === 2) {
         return [[x-tile_size, y],[x-tile_size, y+tile_size]];
@@ -78,32 +87,55 @@ SquareBlock.prototype.getCollidePositions = function() {
 };
 
 SquareBlock.prototype.willCollide = function(block_group) {
-    
+        
+    var will_collide = false;
     block_group.forEach(function(block) {
+        
+        if (block.is_moving) {
+            return;
+        }
+        
         block.forEach(function(component) {
             var collidePositions = this.getCollidePositions();
             var componentPosition = [component.position.x, component.position.y];
-            var is_colliding = this.checkCollision(collidePositions, componentPosition);
-            console.log(is_colliding);
-            if (is_colliding) {
-                console.log("returning true");
-                return true;
+            var colliding = this.checkCollision(collidePositions, componentPosition);
+            if (colliding === true) {
+                will_collide = true;
             }
             //console.log('x: ' + component.position.x + ' y: ' + component.position.y);
         }, this);
     }, this);
     
-    return false;
+    return will_collide;
+};
+
+SquareBlock.prototype.willCollidePlayer = function(player_group) {
+    var will_collide = false;
+    player_group.forEach(function(player){
+        var collidePositions = this.getCollidePositions();
+        var playerPosition = [player.position.x, player.position.y];
+        var colliding = this.checkCollision(collidePositions, playerPosition);
+        if (colliding === true) {
+            will_collide = true;
+        }
+    }, this);
+    
+    return will_collide;
 };
 
 SquareBlock.prototype.checkCollision = function(collidePositions, componentPosition) {
     
+    var collision_detected = false;
     collidePositions.forEach(function(pos) {
+        
+        //console.log("collider: " + pos + " other component: " + componentPosition);
+        
         if (pos[0] === componentPosition[0] && pos[1] === componentPosition[1]) {
-            console.log(">>>>>>>>>>>>>>>>>>>> HIT! >>>>>>>>>>>>>>>>>>>>>");
-            this.stopMovement();
-            return true;
+            //console.log(">>>>>>>>>>>>>>>>>>>> HIT! >>>>>>>>>>>>>>>>>>>>>");
+            //this.stopMovement();
+            collision_detected = true;
         }
     }, this);
-    return false;
+    //console.log("is detected ? " + collision_detected);
+    return collision_detected;
 };
