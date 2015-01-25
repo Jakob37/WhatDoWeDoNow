@@ -10,7 +10,7 @@ var text;
 
 var tile_size = 32;
 
-var delay = 150;
+var delay = 70;
 
 var create_time = 0;
 var create_delay = 2000;
@@ -18,6 +18,8 @@ var create_delay = 2000;
 var test_tile;
 var sfx;
 var music;
+
+var info_text;
 
 play.prototype = {
 
@@ -50,6 +52,8 @@ play.prototype = {
         this.setup_players();
         
         this.generate_terrain();
+        info_text = this.game.add.text(10, 10, 'Clogged tiles: ',
+            {fontSize: '12px', fill:'#fff'});
         //this.create_square_pair();
     },
     
@@ -115,7 +119,7 @@ play.prototype = {
             return this.game.width;
         }
         else if (direction === 3) {
-            return 0;
+            return -2*tile_size;
         }
         else {
             alert("whats going on");
@@ -144,8 +148,8 @@ play.prototype = {
         this.game.physics.arcade.collide(player_group, player_group, self.test_func, null, this);
         
         // Update players
-        player_group.forEach(function(player){
-            player.update_player();
+        player_group.forEach(function(pl){
+            pl.update_player(block_group);
         }, this);
         
         // Collision
@@ -164,11 +168,24 @@ play.prototype = {
         // Movement
         block_group.forEach(function(sub_block) {
             if(sub_block.is_moving) {
-                    sub_block.update_movement();
+                sub_block.update_movement();
+            }
+        }, this);
+        
+        // Check for components dead outside
+        block_group.forEach(function(sub_block) {
+            if (!sub_block.is_moving) {
+                sub_block.forEach(function(component){
+                    if (component.isOutside()) {
+                        component.kill();
+                    }
+                }, this);
             }
         }, this);
         
         this.tile_generator();
+        
+        info_text.text = "Clogged tiles: " + this.count_stopped_blocks();
     },
     
     tile_generator: function() {
@@ -176,7 +193,24 @@ play.prototype = {
             this.create_random_tile();
             create_time = this.game.time.now + create_delay;
             create_delay *= 0.98;
-            console.log("Current delay: " + create_delay);
         }
-    }
+    },
+    
+    count_stopped_blocks: function() {
+        var blocks = 0;
+        block_group.forEach(function(block) {
+            
+            if(block.is_moving) {
+                return;
+            }
+            
+            block.forEach(function(component) {
+                if (!component.isDead()) {
+                    blocks += 1;
+                }
+            });
+        });
+        
+        return blocks;
+    },
 };
