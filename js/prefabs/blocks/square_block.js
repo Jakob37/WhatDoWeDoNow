@@ -8,7 +8,7 @@ var SquareBlock = function(game, x, y, direction) {
     console.log(this.getRandomColor());
     self.damped_color = 0x999999;
     this.move_time = 0;
-    this.move_time_delay = 100;
+    this.move_time_delay = 60;
     this.direction = direction;
     
     this.is_moving = true;
