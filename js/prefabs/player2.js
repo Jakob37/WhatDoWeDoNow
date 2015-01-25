@@ -26,16 +26,24 @@ Player2.prototype.update_movement = function(block_group) {
     var rightKey = this.game.input.keyboard.addKey(Phaser.Keyboard.D);
     var downKey = this.game.input.keyboard.addKey(Phaser.Keyboard.S);
 
+    var attempted_pos = null;
     if (upKey.isDown) {
-        GameObject.prototype.move(this, dirEnum.Up);
+        attempted_pos = GameObject.prototype.move(this, dirEnum.Up);
     }
     else if (leftKey.isDown) {
-        GameObject.prototype.move(this, dirEnum.Left);
+        attempted_pos = GameObject.prototype.move(this, dirEnum.Left);
     }
     else if (rightKey.isDown) {
-        GameObject.prototype.move(this, dirEnum.Right);
+        attempted_pos = GameObject.prototype.move(this, dirEnum.Right);
     }
     else if (downKey.isDown) {
-        GameObject.prototype.move(this, dirEnum.Down);
+        attempted_pos = GameObject.prototype.move(this, dirEnum.Down);
+    }
+    
+    if (attempted_pos !== null) {
+        var collide_component = GameObject.prototype.getComponentAt(block_group, attempted_pos[0], attempted_pos[1]);
+        if (collide_component !== null) {
+            collide_component.damage();
+        }
     }
 };

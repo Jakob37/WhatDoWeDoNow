@@ -10,7 +10,7 @@ var player;
 
 var tile_size = 32;
 
-var delay = 150;
+var delay = 70;
 
 var create_time = 0;
 var create_delay = 2000;
@@ -135,8 +135,8 @@ play.prototype = {
         this.game.physics.arcade.collide(player_group, player_group, self.test_func, null, this);
         
         // Update players
-        player_group.forEach(function(player){
-            player.update_player();
+        player_group.forEach(function(pl){
+            pl.update_player(block_group);
         }, this);
         
         // Collision
@@ -167,7 +167,6 @@ play.prototype = {
             this.create_random_tile();
             create_time = this.game.time.now + create_delay;
             create_delay *= 0.98;
-            console.log("Current delay: " + create_delay);
         }
     }
 };

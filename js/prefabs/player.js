@@ -5,6 +5,7 @@ var Player = function(game, x, y) {
 
     this.game.physics.arcade.enableBody(this);
     this.body.collideWorldBounds = true;
+    
 };
 
 Player.prototype = Object.create(Phaser.Sprite.prototype);
@@ -23,21 +24,25 @@ Player.prototype.update_player = function(block_group) {
 Player.prototype.update_movement = function(block_group) {
     var cursors = this.game.input.keyboard.createCursorKeys();
 
+    var attempted_pos = null;
     if (cursors.right.isDown) {
-        GameObject.prototype.move(this, dirEnum.Right);
-
-//        block_group.forEach(function(){
-//            console.log("hello!");
-//        });
+        attempted_pos = GameObject.prototype.move(this, dirEnum.Right);    
     }
     else if (cursors.left.isDown) {
-        GameObject.prototype.move(this, dirEnum.Left);
+        attempted_pos = GameObject.prototype.move(this, dirEnum.Left);
     }
     else if (cursors.up.isDown) {
-        GameObject.prototype.move(this, dirEnum.Up);
+        attempted_pos = GameObject.prototype.move(this, dirEnum.Up);
     }
     else if (cursors.down.isDown) {
-        GameObject.prototype.move(this, dirEnum.Down);
+        attempted_pos = GameObject.prototype.move(this, dirEnum.Down);
+    }
+
+    if (attempted_pos !== null) {
+        var collide_component = GameObject.prototype.getComponentAt(block_group, attempted_pos[0], attempted_pos[1]);
+        if (collide_component !== null) {
+            collide_component.damage();
+        }
     }
 };
 
