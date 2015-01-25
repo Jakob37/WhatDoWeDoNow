@@ -75,7 +75,7 @@ play.prototype = {
     
     remove_text: function() {
         this.game.add.tween(text).to( { alpha: 0 }, 1000, Phaser.Easing.Linear.None, true);
-        music.play('',0,1,true);
+        music.play('',0,0.5,true);
     },
     
     setup_players: function() {
@@ -240,4 +240,7 @@ play.prototype = {
         
         return blocks;
     },
+    play_sound: function() {
+        sfx.play();
+    }
 };

@@ -21,7 +21,8 @@ BlockComponent.prototype.damage = function() {
     
     this.health -= 1;
     if (this.health <= 0) {
-        this.kill();
+        this.game.play_sound();
+        this.destroy();
     }
 };
 
