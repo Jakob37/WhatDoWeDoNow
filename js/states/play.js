@@ -56,6 +56,7 @@ play.prototype = {
         text = this.game.add.text(this.game.world.centerX, this.game.world.centerY -100, "What will we do now?", style);
         text.anchor.set(0.5);
         this.game.time.events.add(Phaser.Timer.SECOND * 1.5, this.remove_text, this);
+        create_time = this.game.time.now + 4000;
         
         this.setup_players();
         
@@ -74,7 +75,7 @@ play.prototype = {
     
     remove_text: function() {
         this.game.add.tween(text).to( { alpha: 0 }, 1000, Phaser.Easing.Linear.None, true);
-        //music.play();
+        music.play('',0,1,true);
     },
     
     setup_players: function() {
