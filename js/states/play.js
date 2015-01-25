@@ -4,20 +4,21 @@ var play = function(game) {
 
 var player_group;
 var block_group;
-var stopped_block_group;
+//var stopped_block_group;
 
 var tile_size = 32;
 
 var delay = 70;
 
 var create_time = 0;
-var create_delay = 2000;
+var create_delay = 1200;
 
 var test_tile;
 var sfx;
 var music;
 
 var info_text;
+var max_clog = 80;
 
 play.prototype = {
 
@@ -174,7 +175,7 @@ play.prototype = {
         
         this.tile_generator();
         
-        info_text.text = "Clogged tiles: " + this.count_stopped_blocks();
+        info_text.text = "Clogged tiles: " + this.count_stopped_blocks() + " / " + max_clog;
     },
     
     tile_generator: function() {
