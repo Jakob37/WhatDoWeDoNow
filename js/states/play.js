@@ -13,14 +13,14 @@ var tile_size = 32;
 var delay = 70;
 
 var create_time = 0;
-var create_delay = 1200;
+var create_delay = 1000;
 
 var test_tile;
 var sfx;
 var music;
 
 var info_text;
-var max_clog = 80;
+var max_clog = 100;
 
 var end_text;
 
@@ -208,14 +208,10 @@ play.prototype = {
                 var finish_time = Math.floor((this.game.time.now - start_time) / 1000);
                 end_text.text = "You are clogged! \n" + finish_time + " seconds";
                 is_game_over = true;
+                this.game.state.start('End');
+
             }
-
         }
-
-
-        
-        
-        
     },
     
     tile_generator: function() {
