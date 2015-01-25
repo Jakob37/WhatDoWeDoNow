@@ -35,27 +35,22 @@ GameObject.prototype.move = function(instance, dir) {
     return end_pos;
 };
 
-GameObject.prototype.getComponentAt = function(block_group, posx, posy) {
-    var target_component = null;
+GameObject.prototype.getComponentsAt = function(block_group, posx, posy) {
+    
+    var target_components = [];
+    //var target_component = null;
     
     block_group.forEach(function(block){
 
-        if (target_component !== null) {
-            return;
-        }
-        
         block.forEach(function(component){
-            
-            if (target_component !== null) {
-                return;
-            }
             
             var compx = component.position.x;
             var compy = component.position.y;
             if(compx === posx && compy === posy) {
-                target_component = component;
+                //target_component = component;
+                target_components.push(component);
             }
         }, this);
     }, this);
-    return target_component;
+    return target_components;
 };
