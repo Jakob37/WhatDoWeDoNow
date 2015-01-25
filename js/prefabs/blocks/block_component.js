@@ -20,6 +20,14 @@ BlockComponent.prototype.setTint = function(color) {
 BlockComponent.prototype.damage = function() {
     
     this.health -= 1;
+    
+    if (this.health === 2) {
+        this.tint = 0x666666;
+    }
+    else if (this.health === 1) {
+        this.tint = 0x444444;
+    }
+    
     if (this.health <= 0) {
         this.game.play_sound();
         this.destroy();

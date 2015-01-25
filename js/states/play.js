@@ -20,7 +20,7 @@ var sfx;
 var music;
 
 var info_text;
-var max_clog = 100;
+var max_clog = 150;
 
 var end_text;
 
@@ -203,7 +203,7 @@ play.prototype = {
             this.tile_generator();
             
             var clog = this.count_stopped_blocks();
-            info_text.text = "Clogged tiles: " + this.count_stopped_blocks() + " / " + max_clog;
+            info_text.text = "Clogged tiles: " + this.count_stopped_blocks() + " / " + max_clog + " delay: " + create_delay;
 
             if(clog >= max_clog) {
                 var finish_time = Math.floor((this.game.time.now - start_time) / 1000);
@@ -219,7 +219,7 @@ play.prototype = {
         if (this.game.time.now > create_time) {
             this.create_random_tile();
             create_time = this.game.time.now + create_delay;
-            create_delay *= 0.98;
+            create_delay *= this.get_delay_reduction_factor(create_delay);
         }
     },
     
@@ -242,5 +242,13 @@ play.prototype = {
     },
     play_sound: function() {
         sfx.play();
+    },
+    get_delay_reduction_factor: function(current_delay) {
+        if (current_delay > 500) {
+            return 0.98;
+        }
+        else {
+            return 0.995;
+        }
     }
 };
