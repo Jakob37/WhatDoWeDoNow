@@ -52,8 +52,8 @@ play.prototype = {
     setup_players: function() {
 
         player_group = this.game.add.group();
-        player = new Player(this, 64, 64);
-        var player2 = new Player2(this, 256, 256);
+        player = new Player(this, 128, 224);
+        var player2 = new Player2(this, 320, 224);
         player_group.add(player);
         player_group.add(player2);
 
