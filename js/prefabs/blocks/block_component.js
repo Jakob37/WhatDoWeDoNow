@@ -28,3 +28,12 @@ BlockComponent.prototype.damage = function() {
 BlockComponent.prototype.isDead = function() {
     return this.health <= 0;
 };
+
+BlockComponent.prototype.isOutside = function() {
+    var x = this.position.x;
+    var y = this.position.y;
+    
+    var x_outside = (x < 0 || x >= 480);
+    var y_outside = (y < 0 || y >= 480);
+    return (x_outside || y_outside);
+};

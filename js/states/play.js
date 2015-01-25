@@ -17,6 +17,8 @@ var test_tile;
 var sfx;
 var music;
 
+var info_text;
+
 play.prototype = {
 
     preload: function() {
@@ -44,6 +46,8 @@ play.prototype = {
         this.setup_players();
         
         this.generate_terrain();
+        info_text = this.game.add.text(10, 10, 'Clogged tiles: ',
+            {fontSize: '12px', fill:'#fff'});
         //this.create_square_pair();
     },
     
@@ -104,7 +108,7 @@ play.prototype = {
             return this.game.width;
         }
         else if (direction === 3) {
-            return 0;
+            return -2*tile_size;
         }
         else {
             alert("whats going on");
@@ -153,11 +157,24 @@ play.prototype = {
         // Movement
         block_group.forEach(function(sub_block) {
             if(sub_block.is_moving) {
-                    sub_block.update_movement();
+                sub_block.update_movement();
+            }
+        }, this);
+        
+        // Check for components dead outside
+        block_group.forEach(function(sub_block) {
+            if (!sub_block.is_moving) {
+                sub_block.forEach(function(component){
+                    if (component.isOutside()) {
+                        component.kill();
+                    }
+                }, this);
             }
         }, this);
         
         this.tile_generator();
+        
+        info_text.text = "Clogged tiles: " + this.count_stopped_blocks();
     },
     
     tile_generator: function() {
@@ -166,5 +183,23 @@ play.prototype = {
             create_time = this.game.time.now + create_delay;
             create_delay *= 0.98;
         }
+    },
+    
+    count_stopped_blocks: function() {
+        var blocks = 0;
+        block_group.forEach(function(block) {
+            
+            if(block.is_moving) {
+                return;
+            }
+            
+            block.forEach(function(component) {
+                if (!component.isDead()) {
+                    blocks += 1;
+                }
+            });
+        });
+        
+        return blocks;
     },
 };
